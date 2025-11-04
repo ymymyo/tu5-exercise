@@ -19,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({ text, onClick, disabled = false }) => {
       className={`button ${disabled ? 'button--disabled' : ''}`} 
       onClick={handleClick}
       disabled={disabled}
+      aria-label={text}
     >
       {text}
     </button>
