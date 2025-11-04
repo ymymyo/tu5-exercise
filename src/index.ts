@@ -177,6 +177,7 @@ app.post("/api/auth/login", async (req: Request, res: Response) => {
 
     res.cookie("username", trimmedName, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       sameSite: "strict",
     });
