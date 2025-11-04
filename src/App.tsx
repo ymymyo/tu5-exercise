@@ -200,9 +200,9 @@ const App: React.FC = () => {
     const denominators = [10, 5, 3, 0, 4];
     const results: number[] = [];
     for (let i = 0; i < numerators.length; i++) {
-      // Fix: Check for division by zero
+      // Skip division by zero - treat as invalid and use 0 as fallback
       if (denominators[i] === 0) {
-        results.push(0); // or handle as error
+        results.push(0);
         continue;
       }
       const result = numerators[i] / denominators[i];

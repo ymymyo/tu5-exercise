@@ -34,6 +34,10 @@ const weatherDescriptions: { [key: number]: string } = {
   99: "Thunderstorm with heavy hail",
 };
 
+// Singapore coordinates
+const SINGAPORE_LATITUDE = 1.29;
+const SINGAPORE_LONGITUDE = 103.85;
+
 export interface DailyWeatherData {
   date: string;
   maxTemp: number;
@@ -46,10 +50,7 @@ export async function getSingaporeWeatherForecast(): Promise<
   DailyWeatherData[]
 > {
   try {
-    const latitude = 1.29; // Singapore latitude
-    const longitude = 103.85; // Singapore longitude
-    
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum&timezone=Asia/Singapore&forecast_days=7`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${SINGAPORE_LATITUDE}&longitude=${SINGAPORE_LONGITUDE}&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum&timezone=Asia/Singapore&forecast_days=7`;
     
     const response = await fetch(url);
     if (!response.ok) {
