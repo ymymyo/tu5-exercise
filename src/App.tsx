@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import Card from "./components/Card.js";
 import Weather from "./components/Weather.js";
 import Login from "./components/Login.js";
+import ErrorBoundary from "./components/ErrorBoundary.js";
 import "./styles/App.css";
 
 const KICKER_TEXT = "The best tees in town. ";
@@ -84,12 +85,62 @@ const App: React.FC = () => {
   };
 
   const fetchCart = async () => {
+    try {
+      const response = await fetch("/api/cart", {
+        method: "GET",
+        credentials: "include",
+      });
+      if (response.ok) {
+        const productIds = await response.json();
+        setCart(productIds);
+      } else {
+        console.error("Error fetching cart:", response.statusText);
+        setCart([]);
+      }
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      setCart([]);
+    }
   };
 
   const addToCart = async (productId: string) => {
+    try {
+      const response = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ productId }),
+      });
+      if (response.ok) {
+        setCart([...cart, productId]);
+      } else {
+        console.error("Error adding to cart:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
   const removeFromCart = async (productId: string) => {
+    try {
+      const response = await fetch("/api/cart", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ productId }),
+      });
+      if (response.ok) {
+        setCart(cart.filter((id) => id !== productId));
+      } else {
+        console.error("Error removing from cart:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error removing from cart:", error);
+    }
   };
 
   const rotateKickerText = () => {
@@ -149,6 +200,11 @@ const App: React.FC = () => {
     const denominators = [10, 5, 3, 0, 4];
     const results: number[] = [];
     for (let i = 0; i < numerators.length; i++) {
+      // Skip division by zero - treat as invalid and use 0 as fallback
+      if (denominators[i] === 0) {
+        results.push(0);
+        continue;
+      }
       const result = numerators[i] / denominators[i];
       const percentage = (result * 100).toFixed(2);
       const formattedResult = percentage.split('.')[0];
@@ -220,7 +276,11 @@ if (typeof window !== "undefined") {
   const container = document.getElementById("root");
   if (container) {
     const root = createRoot(container);
-    root.render(<App />);
+    root.render(
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    );
   }
 }
 

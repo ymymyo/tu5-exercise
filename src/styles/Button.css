@@ -23,6 +23,11 @@
   background-color: #004085;
 }
 
+.button:focus-visible {
+  outline: 3px solid #0056b3;
+  outline-offset: 2px;
+}
+
 .button--disabled {
   background-color: #6c757d;
   cursor: default;
@@ -38,3 +43,6 @@
   background-color: #6c757d;
 }
 
+.button--disabled:focus-visible {
+  outline: none;
+}

@@ -32,7 +32,13 @@ const Weather: React.FC = () => {
   };
 
   if (loading) {
-    return null;
+    return (
+      <div className="weather-skeleton">
+        <div className="skeleton-box"></div>
+        <div className="skeleton-box"></div>
+        <div className="skeleton-box"></div>
+      </div>
+    );
   }
 
   return (
